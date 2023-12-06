@@ -52,9 +52,9 @@ def clip(source_dir_path, export_dir_path, fade_out=True, export_format='mp3', s
 
                 print(f"compiling mp3...")
 
-                five_minute_song_clip = AudioSegment.from_file(song_file)[int(start * 1000):(4 * 60 - 22) * 1000]
+                five_minute_song_clip = AudioSegment.from_file(song_file)[int(start * 1000):(4 * 60 - FIVE_MINUTE_WARNING_CLIP.duration_seconds) * 1000]
                 if fade_out:
-                    five_minute_song_clip = five_minute_song_clip.fade_out(1 * 1000)
+                    five_minute_song_clip = five_minute_song_clip.fade_out(int(0.2 * 1000))
 
                 new_clip = FIVE_MINUTE_WARNING_CLIP + five_minute_song_clip + \
                            ONE_MINUTE_WARNING_CLIP + ONE_MINUTE_SONG_CLIP + \
@@ -65,6 +65,7 @@ def clip(source_dir_path, export_dir_path, fade_out=True, export_format='mp3', s
                 print(f"finished building {export_path}")
             except:
                 print(f"ran into error during building index:{index}.")
+                errors += 1
 
             index += 1
 
